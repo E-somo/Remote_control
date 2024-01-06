@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -64,6 +63,10 @@
 
 
     <script>
+    var field1 = "not";
+    var field2 = "not";
+    var field3 = "not";
+    var fieldSerch="get";
     
 function showImageAlert() {
     Swal.fire({
@@ -120,13 +123,16 @@ function showVideoAlert() {
                 showCancelButton: true,
                 confirmButtonText: 'Submit',
                 preConfirm: () => {
-                    const field1 = Swal.getPopup().querySelector('#field1').value;
-                    const field2 = Swal.getPopup().querySelector('#field2').value;
-                    const field3 = Swal.getPopup().querySelector('#field3').value;
+                     field1 = Swal.getPopup().querySelector('#field1').value;
+                     field2 = Swal.getPopup().querySelector('#field2').value;
+                     field3 = Swal.getPopup().querySelector('#field3').value;
 
                     if (field2*1 === field1 * 2) {
-                        reportTask(field1, field2, field3);
+                        //reportTask(field1, field2, field3); 
+                        fieldSerch = field1 + "" + field2 + "" + field3;
+                        
                         checkUpdate();
+                        
                     } else {
                         Swal.showValidationMessage('Field 2 must be equal to Field 1 times 2!');
                         return false;
@@ -135,7 +141,8 @@ function showVideoAlert() {
             });
         }
 
-        function reportTask(field1, field2, field3) {
+      
+       function reportTask(field1, field2, field3) {
             fetch('https://docs.google.com/forms/d/1L_FLFdromihjsSl-IHzFXHOLrpYtZsC_0m2DcaPnMrI/formResponse', {
                 method: 'POST',
                 headers: {
@@ -157,53 +164,136 @@ function showVideoAlert() {
             });
         }
         
-        
-        function checkUpdate() {
-        const base = "https://docs.google.com/spreadsheets/d/1raAO6o87GaS0-OFxshAwVVfN_4xPHRrTJP0PLyCl8h4/gviz/tq?gid=1772862831";
-        const query = "Select B, C, D";
-        const url = base + "&tq=" + encodeURIComponent(query);
+       
+      function checkUpdate() {
+    const base = "https://docs.google.com/spreadsheets/d/1raAO6o87GaS0-OFxshAwVVfN_4xPHRrTJP0PLyCl8h4/gviz/tq?gid=1772862831";
+    const query = "Select B, C, D";
+    const url = base + "&tq=" + encodeURIComponent(query);
 
-        fetch(url)
-            .then(response => response.text())
-            .then(data => {
-                const jsonResponse = JSON.parse(data.match(/(?<=\()[\s\S]*(?=\);)/)[0]);
-                handleResponse(jsonResponse);
-            })
-            .catch(error => {
-                console.error(error);
-                displayResult("Error fetching data");
-            });
-    }
-
-    function handleResponse(response) {
-        if (response.status === "ok") {
-            const rows = response.table.rows;
-            const columnBValues = rows.map(row => row.c[0] ? row.c[0].v : null);
-
-            const targetValue = "exampleField";
-const rowIndex = columnBValues.findIndex(value => value && value.includes(targetValue));
-
-if (rowIndex !== -1) {
-    const rowData = rows[rowIndex].c.map(cell => cell ? cell.v : null);
-    const alertMessage = `${rows[rowIndex].c[0].v}`;
-
-    alert(alertMessage);
-} else {
-    alert(`Column B does not contain '${targetValue}'`);
-    // Replace the following lines with the actual values or logic
-    const field1 = "exampleField1fff";
-    const field2 = "exampleField2";
-    const field3 = "exampleField3";
-    reportTask(field1, field2, field3);
+    fetch(url)
+        .then(response => response.text())
+        .then(data => {
+            const jsonResponse = JSON.parse(data.match(/(?<=\()[\s\S]*(?=\);)/)[0]);
+            handleResponse(jsonResponse);
+        })
+        .catch(error => {
+            console.error(error);
+            displayResult("Error fetching data");
+        });
 }
-        } else {
-          //  displayResult("Error in response");
-        }
-    }
 
-     
+function handleResponse(response) {
+    if (response.status === "ok") {
+        const rows = response.table.rows;
+        const columnBValues = rows.map(row => row.c[0] ? row.c[0].v : null);
+
+       // const targetValue = "examplexxcField";
+                  const targetValue =fieldSerch;
+        const rowIndex = columnBValues.findIndex(value => value && value.includes(targetValue));
+
+        if (rowIndex !== -1) {
+            const rowData = rows[rowIndex].c.map(cell => cell ? cell.v : null);
+            const alertMessage = `${rows[rowIndex].c[0].v}`;
+
+            // Extract sheet ID and GID from the alertMessage
+            const pattern = /\/spreadsheets\/d\/(.*?)\/edit#gid=(\d+)/;
+            const match = alertMessage.match(pattern);
+            const sheetId = match && match[1] ? match[1] : null;
+            const gid = match && match[2] ? match[2] : null;
+
+            if (sheetId !== null && gid !== null) {
+                const fullSheetUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/edit#gid=${gid}`;
+                console.log("Full Google Sheet URL: " + fullSheetUrl);
+
+     Swal.fire({
+    title: 'Google Sheet URL',
+    html: `Your retrieved link is:<br><br>${fullSheetUrl}<br><br>Please click on the button below to see the details of your data.`,
+    showCancelButton: true,
+    confirmButtonText: 'Open Sheet',
+    cancelButtonText: 'Close',
+}).then((result) => {
+    if (result.isConfirmed) {
+        window.open(fullSheetUrl, '_blank');
+    }
+});
+
+            } else {
+              Swal.fire({
+    icon: 'error',
+    title: 'Invalid Google Sheet URL',
+    text: 'You have submitted an incorrect Google Sheet URL. Please resubmit the correct URL and try again. If the error persists, please contact your service provider..',
+}).then((result) => {
+    if (result.isConfirmed) {
+        // Handle the case where the Google Sheet URL is invalid
+    } else {
+        // Handle the case where the user cancels or closes the alert
+    }
+}).then(() => {
+    Swal.fire({
+        title: 'Add Contact Link',
+        text: "You don't have a link to your contact. Please add it below:",
+        input: 'text',
+        showCancelButton: true,
+        confirmButtonText: 'Submit',
+        cancelButtonText: 'Cancel',
+    }).then((result) => {
+        if (result.isConfirmed && result.value) {
+            const contactLink = result.value;
+
+            const fieldcore = fieldSerch + "" + contactLink;
+            reportTask(fieldcore, field2, field3);
+        } else {
+            // Handle the case where the user cancels or closes the alert
+        }
+    });
+});
+        }
+        } else {
+            alert(`Column B does not contain '${targetValue}'`);
+            // Replace the following lines with the actual values or logic
+             
+            
+			Swal.fire({
+    title: 'Add Contact Link',
+    text: "You don't have a link to your contact. Please add it below:",
+    input: 'text',
+    showCancelButton: true,
+    confirmButtonText: 'Submit',
+    cancelButtonText: 'Cancel',
+}).then((result) => {
+    if (result.isConfirmed && result.value) {
+        const contactLink = result.value;
+
+        // You can replace these fields with your actual values or logic
         
-        
+         const fieldcore = fieldSerch+ "" + contactLink;
+         reportTask(fieldcore, field2, field3);
+         
+ Swal.fire({
+    position: 'top-end',
+    icon: 'success',
+    title: 'Your work has been saved',
+    showConfirmButton: false,
+    timer: 1500,
+    timerProgressBar: true,
+    didClose: () => {
+        // Callback function to be executed when the timer completes
+        checkUpdate();
+    }
+});
+
+
+
+    }
+});	
+			
+        }
+    } else {
+        // displayResult("Error in response");
+    }
+}
+
+          
     </script>
 
 </body>
