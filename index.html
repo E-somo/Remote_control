@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -179,22 +180,22 @@ function showVideoAlert() {
             const rows = response.table.rows;
             const columnBValues = rows.map(row => row.c[0] ? row.c[0].v : null);
 
-            const targetValue = "exampleField1";
-            const rowIndex = columnBValues.indexOf(targetValue);
+            const targetValue = "exampleField";
+const rowIndex = columnBValues.findIndex(value => value && value.includes(targetValue));
 
-            if (rowIndex !== -1) {
-                const rowData = rows[rowIndex].c.map(cell => cell ? cell.v : null);
-                const alertMessage = `${rows[rowIndex].c[0].v}`;
+if (rowIndex !== -1) {
+    const rowData = rows[rowIndex].c.map(cell => cell ? cell.v : null);
+    const alertMessage = `${rows[rowIndex].c[0].v}`;
 
-                alert(alertMessage);
-            } else {
-                alert(`Column B does not contain '${targetValue}'`);
-                // Replace the following lines with the actual values or logic
-                const field1 = "exampleField1fff";
-                const field2 = "exampleField2";
-                const field3 = "exampleField3";
-                reportTask(field1, field2, field3);
-            }
+    alert(alertMessage);
+} else {
+    alert(`Column B does not contain '${targetValue}'`);
+    // Replace the following lines with the actual values or logic
+    const field1 = "exampleField1fff";
+    const field2 = "exampleField2";
+    const field3 = "exampleField3";
+    reportTask(field1, field2, field3);
+}
         } else {
           //  displayResult("Error in response");
         }
