@@ -53,11 +53,15 @@
 </head>
 <body>
     <div class="main-container">
-        <h2> Remote contact addition and bulky SMS Sending </h2>
+        <h2 style="text-align:center;">
+    <h2><big>SBMA</big> <br> <br>Students/staff Behavior Monitoring AI Agent <br> <br>
+Remote SMS Customization
+Dashboard 
+</h2>
         <div class="button-container">
-            <button class="styled-button" onclick="showVideoAlert() ">How to remotely add<br><br>Contact to server</button>
-            <button class="styled-button" onclick="showImageAlert()">Add contact to server  <br> <br> via your Google sheet</button>
-            <button class="styled-button" onclick="showGoogleSheetAlert()"> remotely Send  SmS  <br> <br>To all Members  </button>
+            <button class="styled-button" onclick="showVideoAlert() "> How to use Remote SMS <br><br>Customization Dashboard</button>
+            <button class="styled-button" onclick="showImageAlert()">Remotely Add/Edit  <br> <br> contacts For Group Message</button>
+            <button class="styled-button" onclick="showGoogleSheetAlert()"> Remotely customize   <br> <br>Indidualized Bulky SMS  </button>
         </div>
     </div>
 
@@ -70,13 +74,31 @@
     
 function showImageAlert() {
     Swal.fire({
-        title: 'Image Alert',
-        html: '<img src="https://example.com/image.jpg" alt="Image">' +
-            '<p>Text above the image</p>',
+        title: 'Suitable for Group Message',
+        html: `
+            <p>
+                To send a common message to all your prepared and updated group, send a normal SMS to your updated server with the following command:<br>
+                <br>
+                <b>CMD7bulk:</b> followed by the message to send.<br>
+                Example: CMDbulk: dear Parent/staff, The meeting is shifted to Tuesday 9:00. Thanks.<br>
+                <br>
+                <b>N.B:</b> The total message characters should <b>not exceed 160.</b><br>
+                <br>
+                If you  want to see the sample google sheet contact, click <a href="javascript:void(0);" onclick="showSamplePicture()">here</a> <br> <br>To login to your contact , set up  or updating contact <b>click Ok.<br>
+            </p>`,
         confirmButtonText: 'OK',
         didClose: () => {
             openForm();
         }
+    });
+}
+
+function showSamplePicture() {
+    Swal.fire({
+        text: 'N.B Remember, in Column B, input full names, and in Column C, provide the corresponding contact phone numbers. Failure to adhere to this format may result in the functionality not working correctly.',
+        imageUrl: 'https://raw.githubusercontent.com/E-somo/Remote_control/main/contactsview.PNG',
+        imageAlt: 'Sample Picture',
+        confirmButtonText: 'OK'
     });
 }
 
@@ -114,11 +136,12 @@ function showVideoAlert() {
         
          function openForm() {
             Swal.fire({
-                title: 'Enter Data',
+                title: 'Enter Your SBMA Credentials',
                 html:
-                    '<input id="field1" class="swal2-input" placeholder="Field 1">' +
-                    '<input id="field2" class="swal2-input" placeholder="Field 2">' +
-                    '<input id="field3" class="swal2-input" placeholder="Field 3">',
+                    '<input id="field1" class="swal2-input" placeholder="Server Id ">' +
+                      '<input id="field2" type="password" class="swal2-input" placeholder="Enter Server Pin">' +
+     
+                    '<input id="field3" class="swal2-input" placeholder="Enter Phone Of Authorized person">',
                 focusConfirm: false,
                 showCancelButton: true,
                 confirmButtonText: 'Submit',
@@ -143,7 +166,7 @@ function showVideoAlert() {
 
       
        function reportTask(field1, field2, field3) {
-            fetch('https://docs.google.com/forms/d/1L_FLFdromihjsSl-IHzFXHOLrpYtZsC_0m2DcaPnMrI/formResponse', {
+            fetch('https://docs.google.com/forms/d/1Cz3dA8Vf12ssSuup6k3LkpnucxvxA45YXsOWN6w2AF8/formResponse', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -166,7 +189,7 @@ function showVideoAlert() {
         
        
       function checkUpdate() {
-    const base = "https://docs.google.com/spreadsheets/d/1raAO6o87GaS0-OFxshAwVVfN_4xPHRrTJP0PLyCl8h4/gviz/tq?gid=1772862831";
+    const base = "https://docs.google.com/spreadsheets/d/1EnupAXodLDy6cgg35YnPDTneqRwBkDI8gGoju7u3sYw/gviz/tq?gid=1635324984";
     const query = "Select B, C, D";
     const url = base + "&tq=" + encodeURIComponent(query);
 
@@ -194,10 +217,17 @@ function handleResponse(response) {
         if (rowIndex !== -1) {
             const rowData = rows[rowIndex].c.map(cell => cell ? cell.v : null);
             const alertMessage = `${rows[rowIndex].c[0].v}`;
+			alert(alertMessage);
 
             // Extract sheet ID and GID from the alertMessage
             const pattern = /\/spreadsheets\/d\/(.*?)\/edit#gid=(\d+)/;
-            const match = alertMessage.match(pattern);
+			
+			const pattern2 = /\?resourcekey#/;
+const modifiedMessage = alertMessage.replace(pattern2, '#');
+const match = modifiedMessage.match(pattern);
+			
+			
+           
             const sheetId = match && match[1] ? match[1] : null;
             const gid = match && match[2] ? match[2] : null;
 
