@@ -102,6 +102,15 @@ function showSamplePicture() {
     });
 }
 
+function showSamplePicture2() {
+    Swal.fire({
+        text: 'N.B Remember, in Column B, input full Message contents, and in Column C, provide the message receiver contact phone numbers. Failure to adhere to this format may result in the functionality not working correctly.',
+        imageUrl: 'https://raw.githubusercontent.com/E-somo/Remote_control/main/graduation.PNG',
+        imageAlt: 'Sample Picture',
+        confirmButtonText: 'OK'
+    });
+}
+
 
 function showVideoAlert() {
     // Create a custom HTML element for the video
@@ -111,7 +120,7 @@ function showVideoAlert() {
             <source src="https://github.com/E-somo/downloads/raw/main/New%20creative%20video.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
-        <p>Text below the video</p>
+        <p> The video  serves ara desctiprion of ho</p>
     `;
 
     // Show the Swal modal with the custom HTML
@@ -124,13 +133,26 @@ function showVideoAlert() {
 }
 
         function showGoogleSheetAlert() {
-            Swal.fire({
-                title: 'Google Sheet Alert',
-                html: '<p>Click the button below to open the Google Sheet:</p>' +
-                      '<a href="https://docs.google.com/spreadsheets/d/your-sheet-id/edit" target="_blank">' +
-                      '<button>Open Google Sheet</button></a>',
-                confirmButtonText: 'Close',
-            });
+           Swal.fire({
+        title: 'Suitable for Mutliple custom Messages',
+        html: `
+           
+<p>
+    To broadcast multiple customized messages to your prepared and updated recipients list, send a standard SMS to your updated server using the following command:<br>
+    <br>
+    <b>CMD8multisms:</b> All corresponding messages will be sent to the respective recipients.<br>
+    Example: CMD8multisms: .<br>
+    <br>
+    <b>N.B:</b> Ensure that the total character count of each message from the SMS column <b>does not exceed 160.</b><br>
+    <br>
+
+                If you  want to see the sample google sheet contact, click <a href="javascript:void(0);" onclick="showSamplePicture2()">here</a> <br> <br>To login to your contact&SMS , set up  or updating contact and coresponding SMS <b>click Ok.<br>
+            </p>`,
+        confirmButtonText: 'OK',
+        didClose: () => {
+            openForm2();
+        }
+    });
         } 
         
         
@@ -141,7 +163,7 @@ function showVideoAlert() {
                     '<input id="field1" class="swal2-input" placeholder="Server Id ">' +
                       '<input id="field2" type="password" class="swal2-input" placeholder="Enter Server Pin">' +
      
-                    '<input id="field3" class="swal2-input" placeholder="Enter Phone Of Authorized person">',
+                    '<input id="field3" class="swal2-input" placeholder="Enter Phone Of Authorized person">  <P> <b> N.B </b>  This form is designed for <b> sending bulk messages.</b> <br> If you intend to send the same message to multiple contacts simultaneously, please proceed.<p> ',
                 focusConfirm: false,
                 showCancelButton: true,
                 confirmButtonText: 'Submit',
@@ -150,23 +172,83 @@ function showVideoAlert() {
                      field2 = Swal.getPopup().querySelector('#field2').value;
                      field3 = Swal.getPopup().querySelector('#field3').value;
 
-                    if (field2*1 === field1 * 2) {
+                    if (field2*1 ===  (((field1*1)+100) * 3))  {
                         //reportTask(field1, field2, field3); 
                         fieldSerch = field1 + "" + field2 + "" + field3;
                         
                         checkUpdate();
                         
                     } else {
-                        Swal.showValidationMessage('Field 2 must be equal to Field 1 times 2!');
+                        Swal.showValidationMessage('Please use valid credential or contact service provider');
                         return false;
                     }
                 }
             });
         }
+        
+        
+        
+    function openForm2() {
+            Swal.fire({
+                title: 'Enter Your SBMA Credentials',
+                html:
+                    '<input id="field1" class="swal2-input" placeholder="Server Id ">' +
+                      '<input id="field2" type="password" class="swal2-input" placeholder="Enter Server Pin">' +
+     
+                    '<input id="field3" class="swal2-input" placeholder="Enter Phone Of Authorized person" <p> <br> <b>N.B </b> This form is  Multi <b>individualized SMS</b> continue if you want to send a custom message to each contact',
+                focusConfirm: false,
+                showCancelButton: true,
+                confirmButtonText: 'Submit',
+                preConfirm: () => {
+                     field1 = Swal.getPopup().querySelector('#field1').value;
+                     field2 = Swal.getPopup().querySelector('#field2').value;
+                     field3 = Swal.getPopup().querySelector('#field3').value;
+
+                     if (field2*1 ===  (((field1*1)+100) * 3)) {
+                        //reportTask(field1, field2, field3); 
+                        fieldSerch = field1 + "" + field2 + "" + field3;
+                        
+                        checkUpdate2();
+                        
+                    } else {
+                        Swal.showValidationMessage('Please use valid credential or concat service provider');
+                        return false;
+                    }
+                }
+            });
+        }
+        
+        
+        
+        
+
 
       
        function reportTask(field1, field2, field3) {
             fetch('https://docs.google.com/forms/d/1Cz3dA8Vf12ssSuup6k3LkpnucxvxA45YXsOWN6w2AF8/formResponse', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'entry.1204219384=' + encodeURIComponent(field1) +
+                        '&entry.1167664038=' + encodeURIComponent(field2) +
+                        '&entry.1234567890=' + encodeURIComponent(field3),
+            })
+            .then(response => {
+                console.log(response);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Data Submitted Successfully!',
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        }
+        
+        
+         function reportTask2(field1, field2, field3) {
+            fetch('https://docs.google.com/forms/d/1gV4-qO--f3PQ-e89aCoxj8Q14tj9f-z0YBdjYJPCRSw/formResponse', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -309,6 +391,145 @@ const match = modifiedMessage.match(pattern);
     didClose: () => {
         // Callback function to be executed when the timer completes
         checkUpdate();
+    }
+});
+
+
+
+    }
+});	
+			
+        }
+    } else {
+        // displayResult("Error in response");
+    }
+}
+
+
+
+
+
+  function checkUpdate2() {
+    const base = "https://docs.google.com/spreadsheets/d/1NlKQnFA2vqZeAWrrgcq948Vthc3JnK2Y7u1UJ3CVC_8/gviz/tq?gid=2016617555";
+    const query = "Select B, C, D";
+    const url = base + "&tq=" + encodeURIComponent(query);
+
+    fetch(url)
+        .then(response => response.text())
+        .then(data => {
+            const jsonResponse = JSON.parse(data.match(/(?<=\()[\s\S]*(?=\);)/)[0]);
+            handleResponse2(jsonResponse);
+        })
+        .catch(error => {
+            console.error(error);
+            displayResult("Error fetching data");
+        });
+}
+
+function handleResponse2(response) {
+    if (response.status === "ok") {
+        const rows = response.table.rows;
+        const columnBValues = rows.map(row => row.c[0] ? row.c[0].v : null);
+
+       // const targetValue = "examplexxcField";
+                  const targetValue =fieldSerch;
+        const rowIndex = columnBValues.findIndex(value => value && value.includes(targetValue));
+
+        if (rowIndex !== -1) {
+            const rowData = rows[rowIndex].c.map(cell => cell ? cell.v : null);
+            const alertMessage = `${rows[rowIndex].c[0].v}`;
+			alert(alertMessage);
+
+            // Extract sheet ID and GID from the alertMessage
+            const pattern = /\/spreadsheets\/d\/(.*?)\/edit#gid=(\d+)/;
+			
+			const pattern2 = /\?resourcekey#/;
+const modifiedMessage = alertMessage.replace(pattern2, '#');
+const match = modifiedMessage.match(pattern);
+			
+			
+           
+            const sheetId = match && match[1] ? match[1] : null;
+            const gid = match && match[2] ? match[2] : null;
+
+            if (sheetId !== null && gid !== null) {
+                const fullSheetUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/edit#gid=${gid}`;
+                console.log("Full Google Sheet URL: " + fullSheetUrl);
+
+     Swal.fire({
+    title: ' Your Google Sheet URL',
+    html: `Your retrieved link is:<br><br>${fullSheetUrl}<br><br>Please click on the button below to see the details of your data. To edit data you need to open the link while signed in with your account `,
+    showCancelButton: true,
+    confirmButtonText: 'Open Sheet',
+    cancelButtonText: 'Close',
+}).then((result) => {
+    if (result.isConfirmed) {
+        window.open(fullSheetUrl, '_blank');
+    }
+});
+
+            } else {
+              Swal.fire({
+    icon: 'error',
+    title: 'Invalid Google Sheet URL',
+    text: 'You have submitted an incorrect Google Sheet URL. Please resubmit the correct URL and try again. If the error persists, please contact your service provider..',
+}).then((result) => {
+    if (result.isConfirmed) {
+        // Handle the case where the Google Sheet URL is invalid
+    } else {
+        // Handle the case where the user cancels or closes the alert
+    }
+}).then(() => {
+    Swal.fire({
+        title: 'Add Contact Link',
+        text: "You don't have a link to your contact. Please add it below:",
+        input: 'text',
+        showCancelButton: true,
+        confirmButtonText: 'Submit',
+        cancelButtonText: 'Cancel',
+    }).then((result) => {
+        if (result.isConfirmed && result.value) {
+            const contactLink = result.value;
+
+            const fieldcore = fieldSerch + "" + contactLink;
+            reportTask2(fieldcore, field2, field3);
+        } else {
+            // Handle the case where the user cancels or closes the alert
+        }
+    });
+});
+        }
+        } else {
+            alert(`Column B opt2 does not contain '${targetValue}'`);
+            // Replace the following lines with the actual values or logic
+             
+            
+			Swal.fire({
+    title: 'Add Contact Link',
+    text: "You don't have a link to your contact. Please add it below:",
+    input: 'text',
+    showCancelButton: true,
+    confirmButtonText: 'Submit',
+    cancelButtonText: 'Cancel',
+}).then((result) => {
+    if (result.isConfirmed && result.value) {
+        const contactLink = result.value;
+
+        // You can replace these fields with your actual values or logic
+        
+         const fieldcore = fieldSerch+ "" + contactLink;
+         reportTask2(fieldcore, field2, field3);
+         
+ Swal.fire({
+    position: 'top-end',
+    icon: 'success',
+    title: 'Your work has been saved',
+    showConfirmButton: false,
+    timer: 1500,
+    timerProgressBar: true,
+    didClose: () => {
+        // Callback function to be executed when the timer completes
+        checkUpdate2();
     }
 });
 
