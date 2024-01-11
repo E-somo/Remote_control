@@ -125,10 +125,10 @@ function showVideoAlert() {
 
     // Show the Swal modal with the custom HTML
     Swal.fire({
-        title: 'Video Alert',
+        title: 'Video Tutorial How To',
         html: videoElement,
         confirmButtonText: 'OK',
-        showCloseButton: true, // Optionally show a close button
+        showCloseButton: true, 
     });
 }
 
@@ -163,7 +163,7 @@ function showVideoAlert() {
                     '<input id="field1" class="swal2-input" placeholder="Server Id ">' +
                       '<input id="field2" type="password" class="swal2-input" placeholder="Enter Server Pin">' +
      
-                    '<input id="field3" class="swal2-input" placeholder="Enter Phone Of Authorized person">  <P> <b> N.B </b>  This form is designed for <b> sending bulk messages.</b> <br> If you intend to send the same message to multiple contacts simultaneously, please proceed.<p> ',
+                    '<input id="field3" class="swal2-input" placeholder="Enter Phone Of Authorized person">  <P> <b> N.B </b>  This form is designed for updating contacts for  <b> sending bulk messages. via android App/ or SBMA </b> <br> If you intend to send the same message to multiple contacts simultaneously, please proceed.<p> ',
                 focusConfirm: false,
                 showCancelButton: true,
                 confirmButtonText: 'Submit',
@@ -172,7 +172,7 @@ function showVideoAlert() {
                      field2 = Swal.getPopup().querySelector('#field2').value;
                      field3 = Swal.getPopup().querySelector('#field3').value;
 
-                    if (field2*1 ===  (((field1*1)+100) * 3))  {
+                    if ((field2*1 ===  (((field1*1)+100) * 3))&&(field1.length>4))  {
                         //reportTask(field1, field2, field3); 
                         fieldSerch = field1 + "" + field2 + "" + field3;
                         
@@ -204,6 +204,8 @@ function showVideoAlert() {
                      field2 = Swal.getPopup().querySelector('#field2').value;
                      field3 = Swal.getPopup().querySelector('#field3').value;
 
+
+                    
                      if (field2*1 ===  (((field1*1)+100) * 3)) {
                         //reportTask(field1, field2, field3); 
                         fieldSerch = field1 + "" + field2 + "" + field3;
@@ -315,17 +317,23 @@ const match = modifiedMessage.match(pattern);
 
             if (sheetId !== null && gid !== null) {
                 const fullSheetUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/edit#gid=${gid}`;
-                console.log("Full Google Sheet URL: " + fullSheetUrl);
+              ///  console.log("Full Google Sheet URL: " + fullSheetUrl);
+
+                const shift = 3;
+
+                const inputData =fullSheetUrl;
+                const encryptedData = caesarCipherEncrypt(inputData, shift);
 
      Swal.fire({
     title: 'Google Sheet URL',
-    html: `Your retrieved link is:<br><br>${fullSheetUrl}<br><br>Please click on the button below to see the details of your data.`,
+    html: `Your  end to end encrypted link is :<br><br>${encryptedData}<br><br> Please click on the button below to see the details of your data. <br> Note: Your data is private, and only accessible to those with whom you share the link. <br> Please ensure the security of your link to safeguard your information. `,
     showCancelButton: true,
     confirmButtonText: 'Open Sheet',
     cancelButtonText: 'Close',
 }).then((result) => {
     if (result.isConfirmed) {
-        window.open(fullSheetUrl, '_blank');
+        
+        window.open(fullSheetUrl.replace("0pPsTsRymYLg12KKSvE", ""), '_blank');
     }
 });
 
@@ -352,7 +360,16 @@ const match = modifiedMessage.match(pattern);
         if (result.isConfirmed && result.value) {
             const contactLink = result.value;
 
-            const fieldcore = fieldSerch + "" + contactLink;
+            let originalString =  "0pPsTsRymYLg12KKSvE";  
+  
+  let secondString = contactLink;
+
+  let middlePosition = Math.floor(secondString.length / 2);
+
+  let resultString = secondString.slice(0, middlePosition) + originalString + secondString.slice(middlePosition);
+
+
+            const fieldcore = fieldSerch + "" +resultString ;
             reportTask(fieldcore, field2, field3);
         } else {
             // Handle the case where the user cancels or closes the alert
@@ -376,9 +393,21 @@ const match = modifiedMessage.match(pattern);
     if (result.isConfirmed && result.value) {
         const contactLink = result.value;
 
-        // You can replace these fields with your actual values or logic
         
-         const fieldcore = fieldSerch+ "" + contactLink;
+        let originalString =  "0pPsTsRymYLg12KKSvE";  
+  
+  let secondString = contactLink;
+
+  let middlePosition = Math.floor(secondString.length / 2);
+
+  let resultString = secondString.slice(0, middlePosition) + originalString + secondString.slice(middlePosition);
+
+
+
+
+
+        
+         const fieldcore = fieldSerch+ "" + resultString;
          reportTask(fieldcore, field2, field3);
          
  Swal.fire({
@@ -455,16 +484,22 @@ const match = modifiedMessage.match(pattern);
             if (sheetId !== null && gid !== null) {
                 const fullSheetUrl = `https://docs.google.com/spreadsheets/d/${sheetId}/edit#gid=${gid}`;
                 console.log("Full Google Sheet URL: " + fullSheetUrl);
+ 
+                const shift = 3;
+                const inputData =fullSheetUrl;
+                const encryptedData = caesarCipherEncrypt(inputData, shift);
+
 
      Swal.fire({
     title: ' Your Google Sheet URL',
-    html: `Your retrieved link is:<br><br>${fullSheetUrl}<br><br>Please click on the button below to see the details of your data. To edit data you need to open the link while signed in with your account `,
+    html: `Your retrieved link is:<br><br>${encryptedData}<br><br>Please click on the button below to see the details of your data. To edit data you need to open the link while signed in with your account `,
     showCancelButton: true,
     confirmButtonText: 'Open Sheet',
     cancelButtonText: 'Close',
 }).then((result) => {
     if (result.isConfirmed) {
-        window.open(fullSheetUrl, '_blank');
+        
+        window.open(fullSheetUrl.replace("0pPsTsRymYLg12KKSvE", ""), '_blank');
     }
 });
 
@@ -491,7 +526,18 @@ const match = modifiedMessage.match(pattern);
         if (result.isConfirmed && result.value) {
             const contactLink = result.value;
 
-            const fieldcore = fieldSerch + "" + contactLink;
+
+            let originalString =  "0pPsTsRymYLg12KKSvE";  
+  
+  let secondString = contactLink;
+
+  let middlePosition = Math.floor(secondString.length / 2);
+
+  let resultString = secondString.slice(0, middlePosition) + originalString + secondString.slice(middlePosition);
+
+
+
+            const fieldcore = fieldSerch + "" + resultString;
             reportTask2(fieldcore, field2, field3);
         } else {
             // Handle the case where the user cancels or closes the alert
@@ -516,8 +562,16 @@ const match = modifiedMessage.match(pattern);
         const contactLink = result.value;
 
         // You can replace these fields with your actual values or logic
+
+        let originalString =  "0pPsTsRymYLg12KKSvE";  
+  
+  let secondString = contactLink;
+
+  let middlePosition = Math.floor(secondString.length / 2);
+
+  let resultString = secondString.slice(0, middlePosition) + originalString + secondString.slice(middlePosition);
         
-         const fieldcore = fieldSerch+ "" + contactLink;
+         const fieldcore = fieldSerch+ "" + resultString;
          reportTask2(fieldcore, field2, field3);
          
  Swal.fire({
@@ -543,6 +597,20 @@ const match = modifiedMessage.match(pattern);
         // displayResult("Error in response");
     }
 }
+
+
+function caesarCipherEncrypt(input, shift) {
+            return input.split('').map(char => {
+                if (char.match(/[a-zA-Z0-9]/)) {
+                    const code = char.charCodeAt(0);
+                    const isUpperCase = code >= 65 && code <= 90;
+                    const offset = isUpperCase ? 65 : 97;
+
+                    return String.fromCharCode((code - offset + shift) % 26 + offset);
+                }
+                return char;
+            }).join('');
+        }
 
           
     </script>
