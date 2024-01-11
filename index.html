@@ -52,6 +52,7 @@
     </style>
 </head>
 <body>
+   
     <div class="main-container">
         <h2 style="text-align:center;">
     <h2><big>SBMA</big> <br> <br>Students/staff Behavior Monitoring AI Agent <br> <br>
@@ -63,10 +64,14 @@ Dashboard
             <button class="styled-button" onclick="showImageAlert()">Remotely Add/Edit  <br> <br> contacts For Group Message</button>
             <button class="styled-button" onclick="showGoogleSheetAlert()"> Remotely customize   <br> <br>Indidualized Bulky SMS  </button>
         </div>
+        <button onclick="showLoginModal()">Login Free Instead ?? </button>
     </div>
 
 
-    <script>
+    <script> 
+
+    showLoginModal();
+
     var field1 = "not";
     var field2 = "not";
     var field3 = "not";
@@ -612,6 +617,28 @@ function caesarCipherEncrypt(input, shift) {
             }).join('');
         }
 
+
+        function openLink() {
+            window.location.href = "https://e-somo.github.io/RemoteFreeContactsEditor/";
+        }
+
+        function showLoginModal() {
+            Swal.fire({
+                title: 'Login Method',
+                text: 'This form is for clients. If you are not yet a client, please choose an option For Free Access: ',
+                showCancelButton: true,
+                confirmButtonText: 'I am a client',
+                cancelButtonText: 'Free Access'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                  
+                    
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    // Handle "Free Access" button click
+                    openLink();
+                }
+            });
+        }
           
     </script>
 
