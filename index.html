@@ -177,14 +177,14 @@ function showVideoAlert() {
                      field2 = Swal.getPopup().querySelector('#field2').value;
                      field3 = Swal.getPopup().querySelector('#field3').value;
 
-                    if ((field2*1 ===  (((field1*1)+100) * 3))&&(field1.length>4))  {
+                    if ((field2*1 ===  (((field1*1)+100) * 3))&&(field1.length>4) &&(field3.length>11))  {
                         //reportTask(field1, field2, field3); 
-                        fieldSerch = field1 + "" + field2 + "" + field3;
+                        fieldSerch = field1 + "" + field2 + "" + field3+"normal";
                         
                         checkUpdate();
                         
                     } else {
-                        Swal.showValidationMessage('Please use valid credential or contact service provider');
+                        Swal.showValidationMessage('Please use valid credential or contact service provider and phone number should biggin with country code ! ');
                         return false;
                     }
                 }
@@ -211,14 +211,14 @@ function showVideoAlert() {
 
 
                     
-                     if (field2*1 ===  (((field1*1)+100) * 3)) {
+                     if ((field2*1 ===  (((field1*1)+100) * 3))&&(field1.length>4) &&(field3.length>11))  {
                         //reportTask(field1, field2, field3); 
-                        fieldSerch = field1 + "" + field2 + "" + field3;
+                        fieldSerch = field1 + "" + field2 + "" + field3 +"custo";
                         
                         checkUpdate2();
                         
                     } else {
-                        Swal.showValidationMessage('Please use valid credential or concat service provider');
+                        Swal.showValidationMessage('Please use valid credential or contact service provider and phone number should begin with country code ! ');
                         return false;
                     }
                 }
@@ -255,7 +255,7 @@ function showVideoAlert() {
         
         
          function reportTask2(field1, field2, field3) {
-            fetch('https://docs.google.com/forms/d/1gV4-qO--f3PQ-e89aCoxj8Q14tj9f-z0YBdjYJPCRSw/formResponse', {
+            fetch('https://docs.google.com/forms/d/1Cz3dA8Vf12ssSuup6k3LkpnucxvxA45YXsOWN6w2AF8/formResponse', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -375,7 +375,7 @@ const match = modifiedMessage.match(pattern);
 
 
             const fieldcore = fieldSerch + "" +resultString ;
-            reportTask(fieldcore, field2, field3);
+            reportTask(fieldcore, field3, field1);
         } else {
             // Handle the case where the user cancels or closes the alert
         }
@@ -407,13 +407,8 @@ const match = modifiedMessage.match(pattern);
 
   let resultString = secondString.slice(0, middlePosition) + originalString + secondString.slice(middlePosition);
 
-
-
-
-
-        
-         const fieldcore = fieldSerch+ "" + resultString;
-         reportTask(fieldcore, field2, field3);
+         const fieldcore = fieldSerch + resultString;
+         reportTask(fieldcore, field3, field1);
          
  Swal.fire({
     position: 'top-end',
@@ -444,7 +439,8 @@ const match = modifiedMessage.match(pattern);
 
 
   function checkUpdate2() {
-    const base = "https://docs.google.com/spreadsheets/d/1NlKQnFA2vqZeAWrrgcq948Vthc3JnK2Y7u1UJ3CVC_8/gviz/tq?gid=2016617555";
+    const base = "https://docs.google.com/spreadsheets/d/1EnupAXodLDy6cgg35YnPDTneqRwBkDI8gGoju7u3sYw/gviz/tq?gid=1635324984";
+    //const base = "https://docs.google.com/spreadsheets/d/1NlKQnFA2vqZeAWrrgcq948Vthc3JnK2Y7u1UJ3CVC_8/gviz/tq?gid=2016617555";
     const query = "Select B, C, D";
     const url = base + "&tq=" + encodeURIComponent(query);
 
@@ -542,8 +538,8 @@ const match = modifiedMessage.match(pattern);
 
 
 
-            const fieldcore = fieldSerch + "" + resultString;
-            reportTask2(fieldcore, field2, field3);
+            const fieldcore = fieldSerch + "custo" + resultString;
+            reportTask2(fieldcore, field3, field1);
         } else {
             // Handle the case where the user cancels or closes the alert
         }
@@ -576,8 +572,8 @@ const match = modifiedMessage.match(pattern);
 
   let resultString = secondString.slice(0, middlePosition) + originalString + secondString.slice(middlePosition);
         
-         const fieldcore = fieldSerch+ "" + resultString;
-         reportTask2(fieldcore, field2, field3);
+         const fieldcore = fieldSerch + resultString;
+         reportTask2(fieldcore, field3, field1);
          
  Swal.fire({
     position: 'top-end',
