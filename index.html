@@ -49,6 +49,20 @@
         .styled-button:hover {
             background-color: #2980b9;
         }
+
+        #changeSheetBtn {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -76,6 +90,7 @@ Dashboard
     var field2 = "not";
     var field3 = "not";
     var fieldSerch="get";
+    var  varfor =0;
     
 function showImageAlert() {
     Swal.fire({
@@ -295,7 +310,44 @@ function showVideoAlert() {
 }
 
 function handleResponse(response) {
-    if (response.status === "ok") {
+    if (response.status === "ok") {  
+
+        if(varfor==1) { 
+     
+            varfor= 0;
+            Swal.fire({
+        title: 'Add Contact Link',
+        text: "You don't have a link to your contact. Please add it below:",
+        input: 'text',
+        showCancelButton: true,
+        confirmButtonText: 'Submit',
+        cancelButtonText: 'Cancel',
+    }).then((result) => {
+        if (result.isConfirmed && result.value) {
+            const contactLink = result.value;
+
+            let originalString =  "0pPsTsRymYLg12KKSvE";  
+  
+  let secondString = contactLink;
+
+  let middlePosition = Math.floor(secondString.length / 2);
+
+  let resultString = secondString.slice(0, middlePosition) + originalString + secondString.slice(middlePosition);
+
+
+            const fieldcore = fieldSerch + "" +resultString ;
+            reportTask(fieldcore, field3, field1);
+        } else {
+            // Handle the case where the user cancels or closes the alert
+        }
+    });
+
+
+
+
+        }else  {
+
+            //alert ("help me now ");
         const rows = response.table.rows;
         const columnBValues = rows.map(row => row.c[0] ? row.c[0].v : null);
 
@@ -306,7 +358,7 @@ function handleResponse(response) {
         if (rowIndex !== -1) {
             const rowData = rows[rowIndex].c.map(cell => cell ? cell.v : null);
             const alertMessage = `${rows[rowIndex].c[0].v}`;
-			alert(alertMessage);
+			///alert(alertMessage);
 
             // Extract sheet ID and GID from the alertMessage
             const pattern = /\/spreadsheets\/d\/(.*?)\/edit#gid=(\d+)/;
@@ -335,6 +387,12 @@ const match = modifiedMessage.match(pattern);
     showCancelButton: true,
     confirmButtonText: 'Open Sheet',
     cancelButtonText: 'Close',
+    footer: '<button id="changeSheetBtn" onclick="changeSheet()">Change Sheet</button>',
+
+                customClass: {
+                    confirmButton: 'btn-open-sheet', // Custom class for "Open Sheet" button
+                    cancelButton: 'btn-close', // Custom class for "Close" button
+                }
 }).then((result) => {
     if (result.isConfirmed) {
         
@@ -383,7 +441,7 @@ const match = modifiedMessage.match(pattern);
 });
         }
         } else {
-            alert(`Column B does not contain '${targetValue}'`);
+          //  alert(`Column B does not contain '${targetValue}'`);
             // Replace the following lines with the actual values or logic
              
             
@@ -428,7 +486,7 @@ const match = modifiedMessage.match(pattern);
     }
 });	
 			
-        }
+             }     }
     } else {
         // displayResult("Error in response");
     }
@@ -457,7 +515,44 @@ const match = modifiedMessage.match(pattern);
 }
 
 function handleResponse2(response) {
-    if (response.status === "ok") {
+    if (response.status === "ok") { 
+
+              if(varfor==1) {
+
+                Swal.fire({
+                title: 'Enter Your SBMA Credentials',
+                html:
+                    '<input id="field1" class="swal2-input" placeholder="Server Id ">' +
+                      '<input id="field2" type="password" class="swal2-input" placeholder="Enter Server Pin">' +
+     
+                    '<input id="field3" class="swal2-input" placeholder="Enter Phone Of Authorized person" <p> <br> <b>N.B </b> This form is  Multi <b>individualized SMS</b> continue if you want to send a custom message to each contact',
+                focusConfirm: false,
+                showCancelButton: true,
+                confirmButtonText: 'Submit',
+                preConfirm: () => {
+                     field1 = Swal.getPopup().querySelector('#field1').value;
+                     field2 = Swal.getPopup().querySelector('#field2').value;
+                     field3 = Swal.getPopup().querySelector('#field3').value;
+
+
+                    
+                     if ((field2*1 ===  (((field1*1)+100) * 3))&&(field1.length>4) &&(field3.length>11))  {
+                        //reportTask(field1, field2, field3); 
+                        fieldSerch = field1 + "" + field2 + "" + field3 +"custo";
+                        
+                        checkUpdate2();
+                        
+                    } else {
+                        Swal.showValidationMessage('Please use valid credential or contact service provider and phone number should begin with country code ! ');
+                        return false;
+                    }
+                }
+            });
+
+                
+              }else{
+
+
         const rows = response.table.rows;
         const columnBValues = rows.map(row => row.c[0] ? row.c[0].v : null);
 
@@ -468,7 +563,7 @@ function handleResponse2(response) {
         if (rowIndex !== -1) {
             const rowData = rows[rowIndex].c.map(cell => cell ? cell.v : null);
             const alertMessage = `${rows[rowIndex].c[0].v}`;
-			alert(alertMessage);
+			//alert(alertMessage);
 
             // Extract sheet ID and GID from the alertMessage
             const pattern = /\/spreadsheets\/d\/(.*?)\/edit#gid=(\d+)/;
@@ -497,6 +592,12 @@ const match = modifiedMessage.match(pattern);
     showCancelButton: true,
     confirmButtonText: 'Open Sheet',
     cancelButtonText: 'Close',
+    footer: '<button id="changeSheetBtn" onclick="changeSheet2()">Change Sheet</button>',
+                customClass: {
+                    confirmButton: 'btn-open-sheet', // Custom class for "Open Sheet" button
+                    cancelButton: 'btn-close', // Custom class for "Close" button
+                }
+                
 }).then((result) => {
     if (result.isConfirmed) {
         
@@ -547,7 +648,7 @@ const match = modifiedMessage.match(pattern);
 });
         }
         } else {
-            alert(`Column B opt2 does not contain '${targetValue}'`);
+           // alert(`Column B opt2 does not contain '${targetValue}'`);
             // Replace the following lines with the actual values or logic
              
             
@@ -593,7 +694,7 @@ const match = modifiedMessage.match(pattern);
     }
 });	
 			
-        }
+           }   }
     } else {
         // displayResult("Error in response");
     }
@@ -634,7 +735,82 @@ function caesarCipherEncrypt(input, shift) {
                     openLink();
                 }
             });
-        }
+        } 
+
+
+
+        function changeSheet() {
+
+            varfor = 1;
+            
+            Swal.fire({
+                title: 'Enter Your SBMA Credentials',
+                html:
+                    '<input id="field1" class="swal2-input" placeholder="Server Id ">' +
+                      '<input id="field2" type="password" class="swal2-input" placeholder="Enter Server Pin">' +
+     
+                    '<input id="field3" class="swal2-input" placeholder="Enter Phone Of Authorized person">  <P> <b> N.B </b>  This form is designed for updating contacts for  <b> sending bulk messages. via android App/ or SBMA </b> <br> If you intend to send the same message to multiple contacts simultaneously, please proceed.<p> ',
+                focusConfirm: false,
+                showCancelButton: true,
+                confirmButtonText: 'Submit',
+                preConfirm: () => {
+                     field1 = Swal.getPopup().querySelector('#field1').value;
+                     field2 = Swal.getPopup().querySelector('#field2').value;
+                     field3 = Swal.getPopup().querySelector('#field3').value;
+
+                    if ((field2*1 ===  (((field1*1)+100) * 3))&&(field1.length>4) &&(field3.length>11))  {
+                        //reportTask(field1, field2, field3); 
+                        fieldSerch = field1 + "" + field2 + "" + field3+"normal";
+                       /// alert("now find them ")
+                        varfor = 0;
+                        checkUpdate();
+                        
+                    } else {
+                        Swal.showValidationMessage('Please use valid credential or contact service provider and phone number should biggin with country code ! ');
+                        return false;
+                    }
+                }
+            }); 
+
+         } 
+
+
+
+         function changeSheet2() {
+
+varfor = 1;
+
+Swal.fire({
+                title: 'Enter Your SBMA Credentials',
+                html:
+                    '<input id="field1" class="swal2-input" placeholder="Server Id ">' +
+                      '<input id="field2" type="password" class="swal2-input" placeholder="Enter Server Pin">' +
+     
+                    '<input id="field3" class="swal2-input" placeholder="Enter Phone Of Authorized person" <p> <br> <b>N.B </b> This form is  Multi <b>individualized SMS</b> continue if you want to send a custom message to each contact',
+                focusConfirm: false,
+                showCancelButton: true,
+                confirmButtonText: 'Submit',
+                preConfirm: () => {
+                     field1 = Swal.getPopup().querySelector('#field1').value;
+                     field2 = Swal.getPopup().querySelector('#field2').value;
+                     field3 = Swal.getPopup().querySelector('#field3').value;
+
+
+                    
+                     if ((field2*1 ===  (((field1*1)+100) * 3))&&(field1.length>4) &&(field3.length>11))  {
+                        //reportTask(field1, field2, field3); 
+                        fieldSerch = field1 + "" + field2 + "" + field3 +"custo";
+                        varfor =0;
+                        checkUpdate2();
+                        
+                    } else {
+                        Swal.showValidationMessage('Please use valid credential or contact service provider and phone number should begin with country code ! ');
+                        return false;
+                    }
+                }
+            });
+
+}
           
     </script>
 
