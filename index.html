@@ -95,12 +95,13 @@ Dashboard
 function showImageAlert() {
     Swal.fire({
         title: 'Suitable for Group Message',
+        allowOutsideClick: false,
         html: `
             <p>
                 To send a common message to all your prepared and updated group, send a normal SMS to your updated server with the following command:<br>
                 <br>
                 <b>CMD7bulk:</b> followed by the message to send.<br>
-                Example: CMDbulk: dear Parent/staff, The meeting is shifted to Tuesday 9:00. Thanks.<br>
+                Example: CMD7bulk: dear Parent/staff, The meeting is shifted to Tuesday 9:00 AM. Thanks.<br>
                 <br>
                 <b>N.B:</b> The total message characters should <b>not exceed 160.</b><br>
                 <br>
@@ -118,6 +119,7 @@ function showSamplePicture() {
         text: 'N.B Remember, in Column B, input full names, and in Column C, provide the corresponding contact phone numbers. Failure to adhere to this format may result in the functionality not working correctly.',
         imageUrl: 'https://raw.githubusercontent.com/E-somo/Remote_control/main/contactsview.PNG',
         imageAlt: 'Sample Picture',
+        allowOutsideClick: false,
         confirmButtonText: 'OK'
     });
 }
@@ -127,6 +129,7 @@ function showSamplePicture2() {
         text: 'N.B Remember, in Column B, input full Message contents, and in Column C, provide the message receiver contact phone numbers. Failure to adhere to this format may result in the functionality not working correctly.',
         imageUrl: 'https://raw.githubusercontent.com/E-somo/Remote_control/main/graduation.PNG',
         imageAlt: 'Sample Picture',
+        allowOutsideClick: false,
         confirmButtonText: 'OK'
     });
 }
@@ -148,12 +151,14 @@ function showVideoAlert() {
         title: 'Video Tutorial How To',
         html: videoElement,
         confirmButtonText: 'OK',
+        allowOutsideClick: false,
         showCloseButton: true, 
     });
 }
 
         function showGoogleSheetAlert() {
            Swal.fire({
+            allowOutsideClick: false,
         title: 'Suitable for Mutliple custom Messages',
         html: `
            
@@ -179,6 +184,7 @@ function showVideoAlert() {
          function openForm() {
             Swal.fire({
                 title: 'Enter Your SBMA Credentials',
+                allowOutsideClick: false,
                 html:
                     '<input id="field1" class="swal2-input" placeholder="Server Id ">' +
                       '<input id="field2" type="password" class="swal2-input" placeholder="Enter Server Pin">' +
@@ -195,11 +201,12 @@ function showVideoAlert() {
                     if ((field2*1 ===  (((field1*1)+100) * 3))&&(field1.length>4) &&(field3.length>11))  {
                         //reportTask(field1, field2, field3); 
                         fieldSerch = field1 + "" + field2 + "" + field3+"normal";
+                        showLoadingModal();
                         
                         checkUpdate();
                         
                     } else {
-                        Swal.showValidationMessage('Please use valid credential or contact service provider and phone number should biggin with country code ! ');
+                        Swal.showValidationMessage('Please ensure that you provide valid credentials. If you encounter any issues, kindly reach out to the service provider. Additionally, when providing a phone number, make sure it begins with the country code ! ');
                         return false;
                     }
                 }
@@ -211,6 +218,7 @@ function showVideoAlert() {
     function openForm2() {
             Swal.fire({
                 title: 'Enter Your SBMA Credentials',
+                allowOutsideClick: false,
                 html:
                     '<input id="field1" class="swal2-input" placeholder="Server Id ">' +
                       '<input id="field2" type="password" class="swal2-input" placeholder="Enter Server Pin">' +
@@ -229,6 +237,7 @@ function showVideoAlert() {
                      if ((field2*1 ===  (((field1*1)+100) * 3))&&(field1.length>4) &&(field3.length>11))  {
                         //reportTask(field1, field2, field3); 
                         fieldSerch = field1 + "" + field2 + "" + field3 +"custo";
+                        showLoadingModal();
                         
                         checkUpdate2();
                         
@@ -260,6 +269,7 @@ function showVideoAlert() {
                 console.log(response);
                 Swal.fire({
                     icon: 'success',
+                    allowOutsideClick: false,
                     title: 'Data Submitted Successfully!',
                 });
             })
@@ -283,6 +293,7 @@ function showVideoAlert() {
                 console.log(response);
                 Swal.fire({
                     icon: 'success',
+                    allowOutsideClick: false,
                     title: 'Data Submitted Successfully!',
                 });
             })
@@ -316,17 +327,20 @@ function handleResponse(response) {
      
             varfor= 0;
             Swal.fire({
-        title: 'Add Contact Link',
-        text: "You don't have a link to your contact. Please add it below:",
-        input: 'text',
-        showCancelButton: true,
-        confirmButtonText: 'Submit',
-        cancelButtonText: 'Cancel',
-    }).then((result) => {
-        if (result.isConfirmed && result.value) {
-            const contactLink = result.value;
+    title: 'Add Contact Link',
+    text: "You don't have a link to your contact. Please add it below:",
+    input: 'text',
+    showCancelButton: true,
+    allowOutsideClick: false ,
+    confirmButtonText: 'Submit',
+    cancelButtonText: 'Cancel',
+    
+}).then((result) => {
+    if (result.isConfirmed && result.value) {
+        const contactLink = result.value;
 
-            let originalString =  "0pPsTsRymYLg12KKSvE";  
+        
+        let originalString =  "0pPsTsRymYLg12KKSvE";  
   
   let secondString = contactLink;
 
@@ -334,16 +348,29 @@ function handleResponse(response) {
 
   let resultString = secondString.slice(0, middlePosition) + originalString + secondString.slice(middlePosition);
 
+         const fieldcore = fieldSerch + resultString;
+         reportTask(fieldcore, field3, field1);
+         
+ Swal.fire({
+    position: 'top-end',
+    icon: 'success',
+    title: 'Your work has been saved',
+    allowOutsideClick: false,
+    showConfirmButton: false,
+    timer: 1500,
+    timerProgressBar: true,
+    didClose: () => {
+        // Callback function to be executed when the timer completes
+        checkUpdate();
+    }
+});
 
-            const fieldcore = fieldSerch + "" +resultString ;
-            reportTask(fieldcore, field3, field1);
-        } else {
-            // Handle the case where the user cancels or closes the alert
-        }
-    });
 
 
-
+    }
+});	
+			
+            
 
         }else  {
 
@@ -385,6 +412,7 @@ const match = modifiedMessage.match(pattern);
     title: 'Google Sheet URL',
     html: `Your  end to end encrypted link is :<br><br>${encryptedData}<br><br> Please click on the button below to see the details of your data. <br> Note: Your data is private, and only accessible to those with whom you share the link. <br> Please ensure the security of your link to safeguard your information. `,
     showCancelButton: true,
+    allowOutsideClick: false,
     confirmButtonText: 'Open Sheet',
     cancelButtonText: 'Close',
     footer: '<button id="changeSheetBtn" onclick="changeSheet()">Change Sheet</button>',
@@ -403,6 +431,7 @@ const match = modifiedMessage.match(pattern);
             } else {
               Swal.fire({
     icon: 'error',
+    allowOutsideClick: false,
     title: 'Invalid Google Sheet URL',
     text: 'You have submitted an incorrect Google Sheet URL. Please resubmit the correct URL and try again. If the error persists, please contact your service provider..',
 }).then((result) => {
@@ -417,6 +446,7 @@ const match = modifiedMessage.match(pattern);
         text: "You don't have a link to your contact. Please add it below:",
         input: 'text',
         showCancelButton: true,
+        allowOutsideClick: false,
         confirmButtonText: 'Submit',
         cancelButtonText: 'Cancel',
     }).then((result) => {
@@ -471,6 +501,7 @@ const match = modifiedMessage.match(pattern);
  Swal.fire({
     position: 'top-end',
     icon: 'success',
+    allowOutsideClick: false,
     title: 'Your work has been saved',
     showConfirmButton: false,
     timer: 1500,
@@ -521,6 +552,7 @@ function handleResponse2(response) {
 
                 Swal.fire({
                 title: 'Enter Your SBMA Credentials',
+                allowOutsideClick: false,
                 html:
                     '<input id="field1" class="swal2-input" placeholder="Server Id ">' +
                       '<input id="field2" type="password" class="swal2-input" placeholder="Enter Server Pin">' +
@@ -539,6 +571,7 @@ function handleResponse2(response) {
                      if ((field2*1 ===  (((field1*1)+100) * 3))&&(field1.length>4) &&(field3.length>11))  {
                         //reportTask(field1, field2, field3); 
                         fieldSerch = field1 + "" + field2 + "" + field3 +"custo";
+                        showLoadingModal();
                         
                         checkUpdate2();
                         
@@ -591,6 +624,7 @@ const match = modifiedMessage.match(pattern);
     html: `Your retrieved link is:<br><br>${encryptedData}<br><br>Please click on the button below to see the details of your data. To edit data you need to open the link while signed in with your account `,
     showCancelButton: true,
     confirmButtonText: 'Open Sheet',
+    allowOutsideClick: false,
     cancelButtonText: 'Close',
     footer: '<button id="changeSheetBtn" onclick="changeSheet2()">Change Sheet</button>',
                 customClass: {
@@ -609,6 +643,7 @@ const match = modifiedMessage.match(pattern);
               Swal.fire({
     icon: 'error',
     title: 'Invalid Google Sheet URL',
+    allowOutsideClick: false,
     text: 'You have submitted an incorrect Google Sheet URL. Please resubmit the correct URL and try again. If the error persists, please contact your service provider..',
 }).then((result) => {
     if (result.isConfirmed) {
@@ -619,6 +654,7 @@ const match = modifiedMessage.match(pattern);
 }).then(() => {
     Swal.fire({
         title: 'Add Contact Link',
+        allowOutsideClick: false,
         text: "You don't have a link to your contact. Please add it below:",
         input: 'text',
         showCancelButton: true,
@@ -679,6 +715,7 @@ const match = modifiedMessage.match(pattern);
  Swal.fire({
     position: 'top-end',
     icon: 'success',
+    allowOutsideClick: false,
     title: 'Your work has been saved',
     showConfirmButton: false,
     timer: 1500,
@@ -724,6 +761,7 @@ function caesarCipherEncrypt(input, shift) {
                 title: 'Login Method',
                 text: 'This form is for clients. If you are not yet a client, please choose an option For Free Access: ',
                 showCancelButton: true,
+                allowOutsideClick: false,
                 confirmButtonText: 'I am a client',
                 cancelButtonText: 'Free Access'
             }).then((result) => {
@@ -745,6 +783,7 @@ function caesarCipherEncrypt(input, shift) {
             
             Swal.fire({
                 title: 'Enter Your SBMA Credentials',
+                allowOutsideClick: false,
                 html:
                     '<input id="field1" class="swal2-input" placeholder="Server Id ">' +
                       '<input id="field2" type="password" class="swal2-input" placeholder="Enter Server Pin">' +
@@ -761,12 +800,13 @@ function caesarCipherEncrypt(input, shift) {
                     if ((field2*1 ===  (((field1*1)+100) * 3))&&(field1.length>4) &&(field3.length>11))  {
                         //reportTask(field1, field2, field3); 
                         fieldSerch = field1 + "" + field2 + "" + field3+"normal";
+                        showLoadingModal();
                        /// alert("now find them ")
-                        varfor = 0;
+                        
                         checkUpdate();
                         
                     } else {
-                        Swal.showValidationMessage('Please use valid credential or contact service provider and phone number should biggin with country code ! ');
+                        Swal.showValidationMessage('Please ensure that you provide valid credentials. If you encounter any issues, kindly reach out to the service provider. Additionally, when providing a phone number, make sure it begins with the country code. ! ');
                         return false;
                     }
                 }
@@ -800,7 +840,8 @@ Swal.fire({
                      if ((field2*1 ===  (((field1*1)+100) * 3))&&(field1.length>4) &&(field3.length>11))  {
                         //reportTask(field1, field2, field3); 
                         fieldSerch = field1 + "" + field2 + "" + field3 +"custo";
-                        varfor =0;
+                        showLoadingModal();
+                        
                         checkUpdate2();
                         
                     } else {
@@ -811,6 +852,18 @@ Swal.fire({
             });
 
 }
+
+
+function showLoadingModal() {
+        Swal.fire({
+            title: 'Wait while Loading',
+            text: 'A well working internet is needed..... ',
+            onBeforeOpen: () => {
+                Swal.showLoading();
+            },
+            showConfirmButton: false,
+        });
+    }
           
     </script>
 
